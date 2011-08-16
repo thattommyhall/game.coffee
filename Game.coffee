@@ -28,16 +28,5 @@ class Game
     for move in @legal_moves(state)
       {move:move, state:@make_move(move, state)}
 
-
-play_game = (game, players) ->
-  state = game.initial
-  while true
-    for p in players
-      move = player(game, state)
-      state = game.make_move move,state
-      if game.terminal_test
-        return game.utility(state,players[0])
-
-
 root = exports ? window
 root.Game = Game
