@@ -22,6 +22,5 @@ class Fig62Game extends Game
   to_move: (state) ->
     if state in ['B','C','D'] then 'MIN' else 'MAX'
 
-
 root = exports ? window
 root.Fig62Game = Fig62Game
