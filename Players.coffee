@@ -51,30 +51,30 @@ alphabeta_full = (game, state) ->
   result.move
 
 alphabeta = (d=4, cutoff_test=null, eval_fn=null) ->
-  max_value = (game, state, alpha, beta, depth) ->
-    return eval_fn(state) if cutoff_test(state,depth)
-    v = -infinity
-    for next in game.successors(state)
-      v = max(v, min_value(game,next.state, alpha, beta, depth+1))
-      return v if v >= beta
-      alpha = max(alpha, v)
-    v
-
-  min_value = (game,state, alpha, beta, depth) ->
-    return eval_fn(state) if cutoff_test(state,depth)
-    v = infinity
-    for next in game.successors(state)
-      v = min(v, max_value(game,next.state, alpha, beta, depth+1))
-      return v if v <= alpha
-      beta = min(beta, v)
-    v
-
   (game,state) ->
+    max_value = (game, state, alpha, beta, depth) ->
+      return eval_fn(state) if cutoff_test(state,depth)
+      v = -infinity
+      for next in game.successors(state)
+        v = max(v, min_value(game,next.state, alpha, beta, depth+1))
+        return v if v >= beta
+        alpha = max(alpha, v)
+      v
+
+    min_value = (game,state, alpha, beta, depth) ->
+      return eval_fn(state) if cutoff_test(state,depth)
+      v = infinity
+      for next in game.successors(state)
+        v = min(v, max_value(game,next.state, alpha, beta, depth+1))
+        return v if v <= alpha
+        beta = min(beta, v)
+      v
+
     eval_fn ?= (state) ->
       game.utility(state,player)
 
     cutoff_test ?= (state, depth) ->
-      depth > d or game.terminal_test(state)
+      depth >= d or game.terminal_test(state)
 
     player = game.to_move(state)
 
